@@ -7,7 +7,13 @@ class User(AbstractUser):
     email=models.CharField(max_length=255,unique=True)
     password=models.CharField(max_length=255)
     date = models.DateField('Date', blank=True, null=True)
-   
+    time=models.TimeField('Time' , blank=True,null=True)
+    phonenumber = models.CharField(max_length=15, null=True, blank=True)
+    gender=models.CharField(max_length=255,default="SOME STRING")
+    location=models.CharField(max_length=255,default="SOME STRING")
+    dob=models.DateField('dateofbirth', blank=True,null=True)
+    maritalstatus=models.CharField(max_length=255,default="SOME STRING")
+    occupation=models.CharField(max_length=255,default="SOME STRING")
 
     username=None
 

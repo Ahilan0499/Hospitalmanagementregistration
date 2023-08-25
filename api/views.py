@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import *
+from api.serializers import *
 from rest_framework.response import Response
 from django.http import JsonResponse
 from django.http import JsonResponse
 from rest_framework.exceptions import AuthenticationFailed
-import jwt,datetime
+import jwt
+import time
+import datetime
 from rest_framework.permissions import AllowAny
-from .models import *
-from datetime import datetime
-
+from api.models import *
+from .authentication import *
 
 
 class Registerview(APIView):
@@ -21,10 +22,29 @@ class Registerview(APIView):
 
     def post(self,request):
         serializer=UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        #serializer.is_valid(raise_exception=True)
+        #user=User.objects.filter(email=serializer.email).first()
+
+        if serializer.is_valid():
+            serializer.save()        
+            user = User.objects.get(email=request.data['email'])   
+            access_token=create_access_token(user.id)
+            refresh_token=create_refresh_taken(user.id)  
+            return Response(
+            {
+              
+            'access':access_token,
+            'refresh':refresh_token
+
+            })  
+                 
+        else:
+            return Response(serializer.errors)
+       
     
+
+
+
 class Loginview(APIView):
     def post(self , request):
         email=request.data['email']
