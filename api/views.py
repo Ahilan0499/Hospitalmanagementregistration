@@ -33,7 +33,7 @@ class Registerview(APIView):
             return Response(
             {
               
-            'access':access_token,
+            'accesss':access_token,
             'refresh':refresh_token
 
             })  
